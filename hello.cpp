@@ -6,9 +6,5 @@ int main() {
     string a = "hello";
     string s = "hello";
     cout << s << endl;
-
-    cout << s << endl;
-    cout << s << endl;
-    cout << s << endl;
     return 0;
 }
