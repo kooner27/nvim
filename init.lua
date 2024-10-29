@@ -8,9 +8,11 @@ vim.g.mapleader = " "
 -- Show tabline when there are multiple tabs
 vim.opt.number = true
 vim.opt.scrolloff = 10
+
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
--- ------- keybindings
+
+---- Keybindings
 -- Map Ctrl + S to save the current file. we disabled ctrl s in bashrc
 vim.keymap.set("n", "<C-s>", ":wa<CR>", { noremap = true, silent = false })
 vim.keymap.set("i", "<C-s>", "<C-o>:wa<CR>", { noremap = true, silent = false })
@@ -24,12 +26,13 @@ vim.api.nvim_set_keymap(
 	{ noremap = true, silent = true }
 )
 
--- vim.api.nvim_set_keymap('v', '<C-k>', '<Esc>', { noremap = true, silent = true })
+-- Remove auto comment formatting stuff
+-- Remove 'c', 'r', and 'o' from formatoptions globally
 
+-- vim.api.nvim_set_keymap('v', '<C-k>', '<Esc>', { noremap = true, silent = true })
 -- ctrl j for switching modes
 -- vim.api.nvim_set_keymap('i', '<C-k>', '<Esc>', { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('n', '<C-k>', 'i', { noremap = true, silent = true })
--------------
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
