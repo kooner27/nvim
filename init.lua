@@ -28,6 +28,16 @@ vim.api.nvim_set_keymap(
 
 -- Remove auto comment formatting stuff
 -- Remove 'c', 'r', and 'o' from formatoptions globally
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "*",
+	callback = function()
+		vim.opt_local.formatoptions:remove("c")
+		vim.opt_local.formatoptions:remove("r")
+		vim.opt_local.formatoptions:remove("o")
+	end,
+})
+
+-- toggle terminal opens termina in buffer so you get error if you wqa
 
 -- vim.api.nvim_set_keymap('v', '<C-k>', '<Esc>', { noremap = true, silent = true })
 -- ctrl j for switching modes

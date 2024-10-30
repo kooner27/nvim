@@ -173,7 +173,15 @@ return {
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
 
-				-- clangd = {},
+				clangd = {
+					filetypes = { "c", "cpp", "objc", "objcpp" },
+					cmd = {
+						"clangd",
+						"--background-index",
+						"--compile-commands-dir=./",
+						"--query-driver=/usr/bin/g++,/usr/bin/gcc,/usr/bin/clang,/usr/bin/clang++",
+					},
+				},
 				-- gopls = {},
 				-- pyright = {},
 				-- rust_analyzer = {},
