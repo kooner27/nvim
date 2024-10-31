@@ -178,7 +178,7 @@ return {
 					cmd = {
 						"clangd",
 						"--background-index",
-						"--compile-commands-dir=./",
+						"--compile-commands-dir=~/",
 						"--query-driver=/usr/bin/g++,/usr/bin/gcc,/usr/bin/clang,/usr/bin/clang++",
 						"--header-insertion=never",
 					},

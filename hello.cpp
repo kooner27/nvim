@@ -1,15 +1,12 @@
 #include <iostream>
-#include <stack>
-#include <string>
+#include <unordered_map>
+
 using namespace std;
 
 int main() {
-    // asdf
-    // asdf
-    string s = "hello";
-    stack<int> stk;
-    stk.push(1);
-    const int x = 5;
-    cout << s << endl;
+    // clangd file in ~ directoroy -std = c++20 for latest lsp
+    unordered_map<int, int> map;
+    map.insert({5, 5});
+    cout << map.contains(5) << endl;
     return 0;
 }
