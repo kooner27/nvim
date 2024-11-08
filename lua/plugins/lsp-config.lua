@@ -174,25 +174,29 @@ return {
 			local servers = {
 
 				clangd = {
-					filetypes = { "c", "cpp", "objc", "objcpp" },
+					filetypes = { "c", "cpp", "objc", "objcpp", "h", "hpp" },
 					cmd = {
 						"clangd",
 						"--background-index",
 						"--compile-commands-dir=~/",
 						"--query-driver=/usr/bin/g++,/usr/bin/gcc,/usr/bin/clang,/usr/bin/clang++",
 						"--header-insertion=never",
+						"--compile-commands-dir=${workspaceFolder}/build",
+						-- "--inlay-parameter-names=none",
+						-- "--inlay-designators=none",
 					},
 				},
 				-- gopls = {},
 				-- pyright = {},
-				-- rust_analyzer = {},
+				rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				--
 				-- Some languages (like typescript) have entire language plugins that can be useful:
 				--    https://github.com/pmizio/typescript-tools.nvim
 				--
 				-- But for many setups, the LSP (`ts_ls`) will work just fine
-				-- ts_ls = {},
+				ts_ls = {},
+
 				--
 
 				lua_ls = {
