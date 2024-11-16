@@ -7,6 +7,10 @@ return {
 			local lint = require("lint")
 			lint.linters_by_ft = {
 				markdown = { "markdownlint" },
+				sh = { "shellcheck" }, -- Adding shellcheck for shell scripts
+				bash = { "shellcheck" }, -- Optionally specify for bash filetype if needed
+				javascript = { "eslint" },
+				css = { "stylelint" },
 			}
 
 			-- To allow other plugins to add linters to require('lint').linters_by_ft,

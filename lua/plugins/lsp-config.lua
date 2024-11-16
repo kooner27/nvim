@@ -95,11 +95,7 @@ return {
 
 					-- Fuzzy find all the symbols in your current workspace.
 					--  Similar to document symbols, except searches over your entire project.
-					map(
-						"<leader>ws",
-						require("telescope.builtin").lsp_dynamic_workspace_symbols,
-						"[W]orkspace [S]ymbols"
-					)
+					map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
 					-- Rename the variable under your cursor.
 					--  Most Language Servers support renaming across files, etc.
@@ -120,8 +116,7 @@ return {
 					-- When you move your cursor, the highlights will be cleared (the second autocommand).
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
 					if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-						local highlight_augroup =
-							vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+						local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
 						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 							buffer = event.buf,
 							group = highlight_augroup,
@@ -196,9 +191,72 @@ return {
 				--
 				-- But for many setups, the LSP (`ts_ls`) will work just fine
 				ts_ls = {},
+				html = {},
+				bashls = {},
+				-----------------
+				cssls = {
+					settings = {
+						css = {
+							lint = {
+								unknownAtRules = "ignore", -- Ignore Tailwind-specific at-rules
+								boxModel = "ignore", -- Suppress box model-related warnings if unnecessary
+								important = "ignore", -- Ignore `!important` usage warnings
+							},
+							validate = true, -- Enable validation for CSS
+						},
+						scss = {
+							lint = {
+								unknownAtRules = "ignore",
+							},
+							validate = true, -- Enable validation for SCSS
+						},
+						less = {
+							lint = {
+								unknownAtRules = "ignore",
+							},
+							validate = true, -- Enable validation for Less
+						},
+					},
+					filetypes = { "css", "scss", "less" }, -- Ensure these filetypes are supported
+				},
+				tailwindcss = {
+					filetypes = {
+						"css",
+						"scss",
+						"html",
+						"javascript",
+						"javascriptreact",
+						"typescript",
+						"typescriptreact",
+						"svelte",
+					},
+					settings = {
+						tailwindCSS = {
+							experimental = {
+								classRegex = {
+									"tw`([^`]*)", -- tw`...`
+									"tw\\(([^)]*)\\)", -- tw(...) for function calls
+									"tw\\.[a-z]+`([^`]*)`", -- tw.class`...`
+								},
+							},
+						},
+						includeLanguages = {
+							javascript = "javascriptreact", -- Treat JS files as React for Tailwind class support
+							typescript = "typescriptreact",
+						},
+						validate = true, -- Enable validation for Tailwind classes
+						lint = {
+							cssConflict = "warning", -- Warn about conflicting classes
+							invalidApply = "error", -- Flag incorrect usage of @apply
+							invalidScreen = "error", -- Flag incorrect @screen usage
+							invalidVariant = "error", -- Flag invalid variants
+							invalidConfigPath = "error", -- Flag invalid Tailwind config paths
+							recommendedVariantOrder = "warning", -- Warn about non-recommended variant orders
+						},
+					},
+				},
 
-				--
-
+				-----------------
 				lua_ls = {
 					-- cmd = {...},
 					-- filetypes = { ...},

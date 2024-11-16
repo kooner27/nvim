@@ -22,7 +22,8 @@ vim.opt.clipboard = "unnamedplus"
 vim.api.nvim_set_keymap(
 	"n",
 	"<leader>p",
-	':set paste<CR>"+p:set nopaste<CR>:%s/\\r//g<CR>',
+	-- ':set paste<CR>"+p:set nopaste<CR>:%s/\\r//g<CR>',
+	':set paste<CR>"+p:set nopaste<CR>',
 	{ noremap = true, silent = true }
 )
 

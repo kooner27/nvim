@@ -32,13 +32,31 @@ return {
 				}
 			end,
 			formatters_by_ft = {
-				lua = { "stylua" },
-				cpp = { "clang-format" },
-				-- Conform can also run multiple formatters sequentially
-				-- python = { "isort", "black" },
-				--
-				-- You can use 'stop_after_first' to run the first available formatter from the list
-				javascript = { "prettierd", "prettier", stop_after_first = true },
+				lua = {
+					"stylua",
+					stop_after_first = true, -- Stops after the first available formatter
+				},
+				cpp = {
+					"clang-format",
+					stop_after_first = true,
+				},
+				sh = {
+					"shfmt",
+					stop_after_first = true,
+				},
+				javascript = { "prettierd", stop_after_first = true },
+				typescript = { "prettierd", stop_after_first = true },
+				html = { "prettierd", stop_after_first = true },
+				css = { "prettierd", stop_after_first = true },
+				scss = { "prettierd", stop_after_first = true },
+				json = { "prettierd", stop_after_first = true },
+				markdown = { "prettierd", stop_after_first = true },
+				yaml = { "prettierd", stop_after_first = true },
+				vue = { "prettierd", stop_after_first = true },
+				svelte = { "prettierd", stop_after_first = true },
+				jsx = { "prettierd", stop_after_first = true },
+				tsx = { "prettierd", stop_after_first = true },
+				-- ["*"] = { "lsp_format" }, -- Fallback to LSP formatting for unsupported filetypes
 			},
 		},
 	},
