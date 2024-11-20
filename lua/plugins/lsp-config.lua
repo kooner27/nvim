@@ -190,7 +190,15 @@ return {
 				--    https://github.com/pmizio/typescript-tools.nvim
 				--
 				-- But for many setups, the LSP (`ts_ls`) will work just fine
-				ts_ls = {},
+				ts_ls = {
+					settings = {
+						completions = {
+							completeFunctionCalls = true, -- Auto-complete function arguments
+						},
+						-- diagnostics = {enable = false}
+					},
+					filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+				},
 				html = {},
 				bashls = {},
 				-----------------
@@ -229,6 +237,7 @@ return {
 						"typescript",
 						"typescriptreact",
 						"svelte",
+						"vue",
 					},
 					settings = {
 						tailwindCSS = {

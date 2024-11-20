@@ -80,6 +80,19 @@ vim.api.nvim_create_autocmd("ModeChanged", {
 	end,
 })
 
+-- Custom indentation for JavaScript
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+	callback = function()
+		vim.opt_local.shiftwidth = 2 -- Number of spaces per indentation level
+		vim.opt_local.tabstop = 2 -- Number of spaces for a tab character
+		vim.opt_local.softtabstop = 2 -- Soft tab stop
+		vim.opt_local.expandtab = true -- Use spaces instead of tabs
+		vim.opt_local.smartindent = true -- Enable smart indentation
+		vim.opt_local.autoindent = true -- Copy indentation from the previous line
+	end,
+})
+
 -- Text wrap toggle
 -- vim.keymap.set("n", "<leader>w", function()
 -- 	-- Toggle wrap

@@ -50,6 +50,7 @@ return {
 				css = { "prettierd", stop_after_first = true },
 				scss = { "prettierd", stop_after_first = true },
 				json = { "prettierd", stop_after_first = true },
+				jsonc = { "prettierd", stop_after_first = true },
 				markdown = { "prettierd", stop_after_first = true },
 				yaml = { "prettierd", stop_after_first = true },
 				vue = { "prettierd", stop_after_first = true },
