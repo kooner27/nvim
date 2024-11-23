@@ -93,6 +93,34 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- Define the function as a global function
+_G.close_other_buffers = function()
+	local current_buf = vim.api.nvim_get_current_buf()
+	local buffers = vim.api.nvim_list_bufs()
+
+	for _, buf in ipairs(buffers) do
+		if buf ~= current_buf and vim.api.nvim_buf_is_loaded(buf) then
+			vim.api.nvim_buf_delete(buf, { force = true })
+		end
+	end
+end
+
+-- Map the function to a keybinding
+vim.api.nvim_set_keymap(
+	"n", -- Normal mode
+	"<Leader>bo", -- Keybinding: <Leader>bo
+	":lua close_other_buffers()<CR>", -- Call the global function
+	{ noremap = true, silent = true } -- Non-recursive and silent
+)
+
+-- Map the function to a keybinding
+vim.api.nvim_set_keymap(
+	"n", -- Normal mode
+	"<Leader>bc", -- Keybinding: <Leader>bo (you can change this)
+	":lua close_other_buffers()<CR>", -- Call the Lua function
+	{ noremap = true, silent = true } -- Non-recursive and silent
+)
+
 -- Text wrap toggle
 -- vim.keymap.set("n", "<leader>w", function()
 -- 	-- Toggle wrap
