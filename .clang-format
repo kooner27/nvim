@@ -1,0 +1,11 @@
+BasedOnStyle: Google
+IndentWidth: 4
+UseTab: Never
+BreakBeforeBraces: Attach # Puts braces on new lines in all cases
+AllowShortBlocksOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false # Forces functions to expand even if they are short
+AllowShortIfStatementsOnASingleLine: false # Forces multi-line formatting for if statements
+AllowShortLoopsOnASingleLine: false # Forces multi-line formatting for loops
+AllowShortCaseLabelsOnASingleLine: false # Forces multi-line formatting for case labels
+ColumnLimit: 120 # Set line length limit to 100 characters
+

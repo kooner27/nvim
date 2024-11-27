@@ -1,0 +1,29 @@
+# Common compile flags for both C and C++ files
+CompileFlags:
+  Add:
+    # - "--include-directory=some/directory/to/search/includes/in"
+    # - "-D"
+    # - "SOME_MACRO_TO_DEFINE"
+    # - "-include"
+    # - "some/file/to/force/inclusion/of.h"
+
+
+
+# Fragment specific to C++ source files
+If:
+  PathMatch: ".*\\.cpp$"
+CompileFlags:
+  Add:
+    - "-std=c++23"
+
+
+
+# Fragment specific to C source files
+If:
+  PathMatch: ".*\\.c$"
+CompileFlags:
+  Add:
+    - "-std=c23"
+
+
+
