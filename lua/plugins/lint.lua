@@ -9,6 +9,7 @@ return {
 				markdown = { "markdownlint" },
 				sh = { "shellcheck" }, -- Adding shellcheck for shell scripts
 				bash = { "shellcheck" }, -- Optionally specify for bash filetype if needed
+				html = { "stylelint" },
 				css = { "stylelint" },
 				javascript = { "eslint_d" }, -- Use ESLint for JavaScript files
 				javascriptreact = { "eslint_d" }, -- JSX files
