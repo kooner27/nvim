@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Linting and LSP Test</title>
+    <script>
+      // JavaScript to test ESLint and LSP functionality
+      const testFunction = () => {
+        const unusedVariable = 42; // This should trigger an ESLint warning if unused variables are enabled
+        console.log("JavaScript Linting and LSP are working!");
+      };
+
+      testFunction();
+    </script>
+    <style>
+      /* CSS to test Stylelint and Tailwind CSS LSP functionality */
+      .test-class {
+        color: red; /* Stylelint should check this */
+        font-size: 1.5rem;
+        @apply text-blue-500; /* Tailwind LSP should recognize this */
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 text-center">
+    <h1 class="text-4xl font-bold text-purple-700">Hello, World!</h1>
+    <p class="text-base text-gray-600">
+      This file is for testing JavaScript, CSS, and Tailwind LSP and linters.
+    </p>
+    <button
+      class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+    >
+      Click Me
+    </button>
+  </body>
+</html>

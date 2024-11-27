@@ -1,0 +1,35 @@
+/* Regular CSS */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: white; /* Check if Stylelint flags incorrect or unused properties */
+  color: #333;
+}
+
+/* Tailwind CSS */
+.header {
+  @apply bg-blue-500 text-white py-4; /* Check if Tailwind LSP provides suggestions and highlights errors */
+}
+
+/* Invalid CSS for Linting Test */
+.invalid-class {
+  font-size: 16px;
+  invalid-property: true; /* Stylelint should flag this as an unknown property */
+}
+
+/* Tailwind Utility Classes */
+.container {
+  @apply flex justify-center items-center h-screen; /* Ensure Tailwind IntelliSense works here */
+}
+
+/* Test Duplicate Properties (Stylelint should catch this) */
+.button {
+  background-color: blue;
+  background-color: red; /* Duplicate declaration */
+}
+
+/* Tailwind Plugin Test (if using Tailwind plugins like forms or typography) */
+.form-input {
+  @apply form-input mt-2 w-full; /* Verify Tailwind plugin support */
+}
