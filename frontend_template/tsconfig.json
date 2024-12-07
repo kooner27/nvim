@@ -1,3 +1,7 @@
+// the ts_ls lsp which neovim uses for js and ts relies on this config file
+// not actually using it to compile stuff
+// just using it for js, react, ts, autocompletion
+// like if we put lib: dom, we get dom autocompletes like 'prompt' and stuff
 {
   "compilerOptions": {
     /* Target modern environments */

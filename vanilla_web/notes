@@ -1,8 +1,0 @@
-javascript
-lsp should work in ts, js, jsx, tsx, and mjs if you didn't disable
-same with eslint
-eslint should also work inside html, didn't test
-impossible to get lsp inside html
-
-css
-css linting and lsp works inside html
