@@ -96,6 +96,3 @@ npm --version
 ```
 
 ---
-```
-
-You can copy-paste this Markdown into your notes for easy reference. Let me know if you need further adjustments!
