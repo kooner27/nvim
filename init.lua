@@ -1,9 +1,10 @@
-vim.opt_local.expandtab = true -- Use spaces instead of tabs
-vim.opt_local.shiftwidth = 2 -- Number of spaces per indentation level
-vim.opt_local.tabstop = 2 -- Number of spaces for a tab character
-vim.opt_local.softtabstop = 2 -- Soft tab stop
-vim.opt_local.smartindent = true -- Enable smart indentation
-vim.opt_local.autoindent = true -- Copy indentation from the previous line
+-- Global indentation settings
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.smartindent = true
+vim.opt.autoindent = true
 
 vim.opt.wrap = false
 vim.g.mapleader = " "
@@ -66,7 +67,6 @@ vim.keymap.set("n", "<leader>tw", toggle_whitespace, { desc = "Toggle Whitespace
 
 -- Optional: keep Visual mode autocmds if you want automatic whitespace visibility in Visual mode
 local toggle_whitespace_group = vim.api.nvim_create_augroup("ToggleWhitespaceOnVisual", { clear = true })
-
 vim.api.nvim_create_autocmd("ModeChanged", {
   group = toggle_whitespace_group,
   pattern = "*:[vV]", -- Triggers for Visual (v), Visual Line (V), and Visual Block (<C-v>) modes
@@ -74,7 +74,6 @@ vim.api.nvim_create_autocmd("ModeChanged", {
     vim.opt.list = true -- Enable listchars when entering Visual mode
   end,
 })
-
 vim.api.nvim_create_autocmd("ModeChanged", {
   group = toggle_whitespace_group,
   pattern = "[vV]:*", -- Triggers when leaving Visual, Visual Line, or Visual Block mode
@@ -83,9 +82,7 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   end,
 })
 
--- Custom indentation for c++
-
--- Define the function as a global function
+-- close all other buffers
 _G.close_other_buffers = function()
   local current_buf = vim.api.nvim_get_current_buf()
   local buffers = vim.api.nvim_list_bufs()
@@ -113,6 +110,7 @@ vim.api.nvim_set_keymap(
   { noremap = true, silent = true } -- Non-recursive and silent
 )
 
+-- c++ indentation, set this and that clang-format to size 4 indents, can change this later
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   pattern = { "*.cpp", "*.c", "*.h", "*.hpp" }, -- Match C++ source and header files
   callback = function()
@@ -124,9 +122,9 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     vim.opt_local.autoindent = true -- Copy indentation from the previous line
   end,
 })
-
+--
 -- vim.api.nvim_create_autocmd("FileType", {
---   pattern = { "javascriptreact", "typescriptreact" },
+--   pattern = { "javascriptreact", "typescriptreact", "tsx", "jsx", "javascript", "typescript" },
 --   callback = function()
 --     vim.opt_local.expandtab = true
 --     vim.opt_local.shiftwidth = 2
