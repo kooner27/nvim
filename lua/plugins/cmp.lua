@@ -41,6 +41,14 @@ return {
       local luasnip = require("luasnip")
       luasnip.config.setup({})
 
+      -- Disable snippet completion for text and markdown files
+      cmp.setup.filetype({ "text", "markdown" }, {
+        sources = {
+          { name = "nvim_lsp", max_item_count = 5 },
+          { name = "path" },
+        },
+      })
+
       cmp.setup({
         snippet = {
           expand = function(args)
