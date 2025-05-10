@@ -13,6 +13,17 @@ vim.g.mapleader = " "
 vim.opt.number = true
 vim.opt.scrolloff = 10
 
+-- change default split global and for copilot (right instead of left)
+vim.opt.splitright = true
+-- also for copilot
+vim.opt.completeopt = { "menu", "menuone", "noinsert", "noselect", "popup" }
+-- disable copilot auto completion, i want it just to be the backend for chat
+vim.g.copilot_enabled = false
+vim.g.copilot_filetypes = { ["*"] = false }
+
+-- highlight current line
+vim.opt.cursorline = true
+
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
