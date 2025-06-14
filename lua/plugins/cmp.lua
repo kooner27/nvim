@@ -47,6 +47,7 @@ return {
           { name = "nvim_lsp", max_item_count = 5 },
           { name = "path" },
         },
+        enabled = false,
       })
 
       cmp.setup({

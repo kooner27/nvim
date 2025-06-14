@@ -30,6 +30,33 @@ return {
           { noremap = true, silent = true }
         )
       end
+      -- fallback if Alt+number doesn't work in Ghostty
+      for i = 1, 9 do
+        vim.keymap.set("n", "<leader>" .. i, function()
+          -- Get list of listed buffers (in bufferline order)
+          local buffers = vim.fn.getbufinfo({ buflisted = 1 })
+          table.sort(buffers, function(a, b)
+            return a.bufnr < b.bufnr
+          end)
+
+          local target = buffers[i]
+          if not target then
+            return
+          end -- No such buffer
+
+          local name = target.name
+          local bufnr = target.bufnr
+          local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+
+          if name == "" and #lines == 1 and lines[1] == "" then
+            -- [No Name] and empty → delete it
+            vim.api.nvim_buf_delete(bufnr, { force = true })
+          else
+            -- valid buffer → go to it
+            vim.cmd("BufferLineGoToBuffer " .. i)
+          end
+        end, { noremap = true, silent = true })
+      end
 
       -- Key mappings for moving buffers left and right
       vim.api.nvim_set_keymap("n", "<A-h>", ":BufferLineMovePrev<CR>", { noremap = true, silent = true })
