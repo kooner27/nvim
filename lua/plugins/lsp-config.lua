@@ -108,6 +108,51 @@ return {
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
           map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+          -- Example keymap
+          ---- K to toggle docs hover window
+          local hover_win = nil
+
+          local function toggle_hover_doc()
+            if hover_win and vim.api.nvim_win_is_valid(hover_win) then
+              vim.api.nvim_win_close(hover_win, true)
+              hover_win = nil
+              return
+            end
+
+            local params = vim.lsp.util.make_position_params()
+            vim.lsp.buf_request(0, "textDocument/hover", params, function(err, result)
+              if err or not result or not result.contents then
+                return
+              end
+
+              local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+              markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
+              if vim.tbl_isempty(markdown_lines) then
+                return
+              end
+
+              local bufnr, winid = vim.lsp.util.open_floating_preview(markdown_lines, "markdown", {
+                border = "single",
+                focusable = true, -- <-- makes it enter-able via <C-w>w
+                focus = false,
+              })
+
+              hover_win = winid
+
+              -- Allow 'q' to close the doc window
+              vim.api.nvim_create_autocmd("BufWinEnter", {
+                buffer = bufnr,
+                once = true,
+                callback = function()
+                  vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = bufnr, silent = true })
+                end,
+              })
+            end)
+          end
+
+          vim.keymap.set("n", "<C-k>", toggle_hover_doc, { buffer = event.buf, desc = "LSP: Toggle Hover Doc" })
+
+          ----
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
