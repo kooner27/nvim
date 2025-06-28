@@ -40,6 +40,10 @@ return {
           "clang-format",
           stop_after_first = true,
         },
+        c = {
+          "clang-format",
+          stop_after_first = true,
+        },
         sh = {
           "shfmt",
           stop_after_first = true,
