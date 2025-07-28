@@ -73,11 +73,20 @@ return {
         -- By default, you may press `<c-space>` to show the documentation.
         -- Optionally, set `auto_show = true` to show the documentation after a delay.
         documentation = { auto_show = false, auto_show_delay_ms = 500 },
+        menu = {
+          draw = {
+            -- Make it look like nvim-cmp: label + kind icon/text
+            columns = {
+              { "label", "label_description", gap = 1 },
+              { "kind_icon", "kind" },
+            },
+          },
+        },
       },
 
       sources = {
         -- removed snippets
-        default = { "lsp", "path", "lazydev" },
+        default = { "lsp", "path", "snippets", "lazydev" },
         providers = {
           lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
         },
@@ -92,7 +101,14 @@ return {
       -- the rust implementation via `'prefer_rust_with_warning'`
       --
       -- See :h blink-cmp-config-fuzzy for more information
-      fuzzy = { implementation = "lua" },
+      fuzzy = {
+        implementation = "rust",
+        sorts = {
+          "score",
+          "sort_text",
+          "label",
+        },
+      },
 
       -- Shows a signature help window while you type arguments for a function
       signature = { enabled = true },
