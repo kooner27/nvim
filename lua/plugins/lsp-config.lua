@@ -150,7 +150,6 @@ return {
                 focusable = true, -- <-- makes it enter-able via <C-w>w
                 focus = false,
               })
-
               hover_win = winid
 
               -- Allow 'q' to close the doc window
@@ -396,7 +395,7 @@ return {
         "eslint_d",
         "html",
         "lua_ls",
-        "markdownlint",
+        -- "markdownlint",
         "prettier",
         "prettierd",
         "rust_analyzer",
