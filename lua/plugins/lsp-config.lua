@@ -395,7 +395,7 @@ return {
         "eslint_d",
         "html",
         "lua_ls",
-        -- "markdownlint",
+        "markdownlint",
         "prettier",
         "prettierd",
         "rust_analyzer",
