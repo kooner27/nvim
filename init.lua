@@ -188,3 +188,4 @@ vim.opt.rtp:prepend(lazypath)
 
 -- lazy import and setup
 require("lazy").setup("plugins")
+require("wrap")
