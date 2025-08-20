@@ -1,7 +1,4 @@
 📄 test.md
-markdown
-Copy
-Edit
 
 # Markview Test Document
 
@@ -32,5 +29,4 @@ def greet(name):
 # 🧪 Image Test
 
 ![Remote Dog](https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/640px-Golde33443.jpg)
-asdf
 asdf
