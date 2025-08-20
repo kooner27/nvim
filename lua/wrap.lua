@@ -1,7 +1,11 @@
 ------------------------------------------------------------
--- Wrap modes: None vs Soft wrap vs Hard wrap (95 cols)
+-- Wrap modes: None vs Soft wrap vs Hard wrap
 -- Works even when this is the ONLY window (no Neo-tree).
 ------------------------------------------------------------
+
+-- Default wrap width
+local WRAP_WIDTH = 95
+
 -- Tab-scoped pad window bookkeeping
 local function close_wrap_pad()
   local pad = vim.t.wrap_pad_win
@@ -75,7 +79,7 @@ local function set_wrap_mode(mode)
     vim.opt_local.signcolumn = "yes"
     print("🔓 No wrap")
   elseif mode == "soft" then
-    ensure_soft_wrap_width(95)
+    ensure_soft_wrap_width(WRAP_WIDTH)
 
     -- hide distractions in the main window
     vim.opt_local.number = false
@@ -89,19 +93,20 @@ local function set_wrap_mode(mode)
     vim.opt_local.textwidth = 0
     vim.opt_local.colorcolumn = ""
     vim.opt_local.formatoptions:remove("t")
-    print("📜 Soft wrap (95 cols)")
+    print("📜 Soft wrap (" .. WRAP_WIDTH .. " cols)")
   elseif mode == "hard" then
     close_wrap_pad()
     vim.opt_local.wrap = false
     vim.opt_local.linebreak = false
     vim.opt_local.breakindent = false
-    vim.opt_local.textwidth = 95
-    vim.opt_local.colorcolumn = "96"
+    vim.opt_local.textwidth = WRAP_WIDTH - 1
+    vim.opt_local.colorcolumn = tostring(WRAP_WIDTH + 1)
+    -- vim.opt_local.colorcolumn = tostring(WRAP_WIDTH + 1)
     vim.opt_local.formatoptions:append("t")
     vim.opt_local.number = true
     vim.opt_local.relativenumber = false
     vim.opt_local.signcolumn = "yes"
-    print("✍️ Hard wrap (95 cols)")
+    print("✍️ Hard wrap (" .. WRAP_WIDTH .. " cols)")
   end
 end
 
@@ -116,7 +121,36 @@ vim.api.nvim_create_user_command("WrapHard", function()
   set_wrap_mode("hard")
 end, {})
 
+-- 🔧 Command to change wrap width dynamically
+vim.api.nvim_create_user_command("WrapWidth", function(opts)
+  WRAP_WIDTH = tonumber(opts.args) or WRAP_WIDTH
+  print("🔧 Wrap width set to " .. WRAP_WIDTH)
+end, { nargs = 1 })
+
 -- Keymaps
 vim.keymap.set("n", "<leader>wn", "<cmd>WrapNone<cr>", { desc = "No wrap" })
-vim.keymap.set("n", "<leader>wf", "<cmd>WrapSoft<cr>", { desc = "Soft wrap (95)" })
-vim.keymap.set("n", "<leader>wh", "<cmd>WrapHard<cr>", { desc = "Hard wrap at 95" })
+vim.keymap.set("n", "<leader>wf", "<cmd>WrapSoft<cr>", { desc = "Soft wrap" })
+vim.keymap.set("n", "<leader>wh", "<cmd>WrapHard<cr>", { desc = "Hard wrap" })
+
+-- Split-only reflow: break long lines, never join short ones
+local function split_only_file()
+  local width = vim.o.textwidth
+  if width == 0 then
+    print("No textwidth set!")
+    return
+  end
+  local last = vim.fn.line("$")
+  for lnum = 1, last do
+    local line = vim.fn.getline(lnum)
+    if vim.fn.strdisplaywidth(line) > width then
+      vim.cmd(lnum .. "normal! gqq")
+    end
+  end
+  print("Split-only wrap done for whole file at " .. width)
+end
+
+-- Command
+vim.api.nvim_create_user_command("SplitOnlyFile", split_only_file, {})
+
+-- Or keymap
+vim.keymap.set("n", "<leader>gq", split_only_file, { desc = "Hard wrap whole file (split-only)" })
