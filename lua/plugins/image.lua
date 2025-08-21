@@ -15,14 +15,24 @@ return {
         backend = "kitty",
         kitty_method = "normal",
         processor = "magick_rock",
+        max_width = 95,
+        max_height = nil,
+        max_width_window_percentage = nil,
+        max_height_window_percentage = nil,
+        scale_factor = 1.0,
+
+        -- max_width_window_percentage = 50, -- percent of window
+        -- max_height_window_percentage = 50,
+        -- window_overlap_clear_enabled = true,
+
         integrations = {
           markdown = {
             enabled = true,
             clear_in_insert_mode = false,
             download_remote_images = true,
             only_render_image_at_cursor = true,
-            only_render_image_at_cursor_mode = "inline",
-            floating_windows = false,
+            only_render_image_at_cursor_mode = "popup",
+            floating_windows = true,
             filetypes = { "markdown" },
           },
         },
