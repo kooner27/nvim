@@ -1,4 +1,3 @@
--- ~/.config/nvim/lua/plugins/image.lua
 return {
   {
     "vhyrro/luarocks.nvim",
@@ -12,122 +11,144 @@ return {
       local image = require("image")
       local is_enabled = true
 
-      -- --- image.nvim setup (ONLY ONCE) ---
       image.setup({
         backend = "kitty",
         kitty_method = "normal",
-        processor = "magick_cli", -- or "magick_rock"
+        processor = "magick_rock",
         integrations = {
           markdown = {
             enabled = true,
             clear_in_insert_mode = false,
             download_remote_images = true,
-            only_render_image_at_cursor = true, -- 👈 render only at cursor
-            only_render_image_at_cursor_mode = "inline", -- "inline" or "popup"
-            -- floating_windows = true, -- only needed for popup
-            filetypes = { "markdown", "vimwiki" },
+            only_render_image_at_cursor = true,
+            only_render_image_at_cursor_mode = "inline",
+            floating_windows = false,
+            filetypes = { "markdown" },
           },
         },
-        max_height_window_percentage = 50,
-        window_overlap_clear_enabled = false,
       })
 
-      -- helpers
-      local function starts_with(s, prefix)
-        return s:sub(1, #prefix) == prefix
-      end
-      local function percent_encode(path)
-        path = path:gsub("%%", "%%25"):gsub(" ", "%%20"):gsub("%(", "%%28"):gsub("%)", "%%29")
-        return path
-      end
-      local function percent_decode(path)
-        return (
-          path:gsub("%%(%x%x)", function(h)
-            local n = tonumber(h, 16)
-            return n and string.char(n) or "%" .. h
-          end)
-        )
-      end
+      -------------------------------------------------------------------
+      -- Markdown → Obsidian (on save/write)
+      -------------------------------------------------------------------
 
-      -- resolve an Obsidian embed path to absolute
-      local function resolve_obsidian_path(filedir, raw_path)
-        local folder_name = vim.fn.fnamemodify(filedir, ":t")
-        raw_path = raw_path:gsub("^%./", "")
-        local prefix = folder_name .. "/"
-        if starts_with(raw_path, prefix) then
-          raw_path = raw_path:sub(#prefix + 1)
-        end
-        if not raw_path:match("/") then
-          raw_path = "attachments/" .. raw_path
-        end
-        return vim.fn.fnamemodify(filedir .. "/" .. raw_path, ":p")
-      end
+      local function markdown_to_obsidian(bufnr)
+        local file_dir = vim.fn.expand("%:p:h")
+        local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 
-      -- Obsidian ⇄ Markdown conversions
-      local function obsidian_line_to_markdown(line, filedir)
-        return line:gsub("!%[%[(.-)%]%]", function(inner)
-          local abs = resolve_obsidian_path(filedir, vim.trim(inner))
-          return "![](" .. percent_encode(abs) .. ")"
-        end)
-      end
-
-      local function markdown_line_to_obsidian(line, filedir)
-        local folder_name = vim.fn.fnamemodify(filedir, ":t")
-        return line:gsub("!%[%]%((.-)%)", function(path)
-          local decoded = percent_decode(path)
-          if starts_with(decoded, filedir .. "/") then
-            local rel = decoded:sub(#filedir + 2)
-            if not starts_with(rel, folder_name .. "/") then
-              rel = folder_name .. "/" .. rel
-            end
-            return "![[" .. rel .. "]]"
-          else
-            return "![](" .. path .. ")"
+        for lnum, line in ipairs(lines) do
+          -- match path + optional width attr
+          local abs, size = line:match("!%[%]%((.-)%)%s*{%s*width=(%d+)%s*}")
+          if not abs then
+            abs = line:match("!%[%]%((.-)%)")
           end
-        end)
+
+          if abs and abs:find(file_dir, 1, true) then
+            local rel = abs:gsub("^" .. vim.pesc(file_dir) .. "/", "")
+            rel = rel:gsub("%%20", " ")
+
+            if not rel:match("^attachments/") then
+              rel = "attachments/" .. rel
+            end
+
+            local new_line = "![[" .. rel
+            if size then
+              new_line = new_line .. "|" .. size
+            end
+            new_line = new_line .. "]]"
+
+            if new_line ~= line then
+              vim.api.nvim_buf_set_lines(bufnr, lnum - 1, lnum, false, { new_line })
+            end
+          end
+        end
       end
 
-      -- Autocommands: convert on read, restore on write
+      -- Auto run before saving markdown
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        pattern = "*.md",
+        callback = function(args)
+          markdown_to_obsidian(args.buf)
+        end,
+      })
+
+      -------------------------------------------------------------------
+      -- Obsidian → Markdown (on read/open)
+      -------------------------------------------------------------------
+
+      local function obsidian_to_markdown(bufnr)
+        local file_dir = vim.fn.expand("%:p:h")
+        local dir_name = vim.fn.fnamemodify(file_dir, ":t")
+        local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+
+        for lnum, line in ipairs(lines) do
+          local embed = line:match("!%[%[(.-)%]%]")
+          if embed then
+            -- Split on |
+            local filename, size = embed:match("^(.-)|(%d+)$")
+            if not filename then
+              filename = embed
+            end
+            filename = vim.trim(filename)
+
+            -- strip leading dir_name/ if present
+            if filename:find("^" .. vim.pesc(dir_name) .. "/") then
+              filename = filename:gsub("^" .. vim.pesc(dir_name) .. "/", "")
+            end
+
+            local abs_path = file_dir .. "/" .. filename
+            local esc_path = abs_path:gsub(" ", "%%20")
+
+            local new_line = "![](" .. esc_path .. ")"
+            if size then
+              new_line = new_line .. "{width=" .. size .. "}"
+            end
+
+            if new_line ~= line then
+              vim.api.nvim_buf_set_lines(bufnr, lnum - 1, lnum, false, { new_line })
+            end
+          end
+        end
+      end
+
+      -------------------------------------------------------------------
+      -- Autocommands
+      -------------------------------------------------------------------
       vim.api.nvim_create_autocmd("BufReadPost", {
         pattern = "*.md",
-        callback = function()
-          if not is_enabled then
-            return
-          end
-          local filedir = vim.fn.expand("%:p:h")
-          local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-          for i, line in ipairs(lines) do
-            lines[i] = obsidian_line_to_markdown(line, filedir)
-          end
-          vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
+        callback = function(args)
+          obsidian_to_markdown(args.buf)
         end,
       })
 
       vim.api.nvim_create_autocmd("BufWritePre", {
         pattern = "*.md",
-        callback = function()
-          local filedir = vim.fn.expand("%:p:h")
-          local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-          for i, line in ipairs(lines) do
-            lines[i] = markdown_line_to_obsidian(line, filedir)
-          end
-          vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
+        callback = function(args)
+          markdown_to_obsidian(args.buf)
         end,
       })
 
-      -- Toggle command + keymap
+      -------------------------------------------------------------------
+      -- Toggle command
+      -------------------------------------------------------------------
       vim.api.nvim_create_user_command("ImageToggle", function()
-        is_enabled = not is_enabled
         if is_enabled then
-          print("image.nvim enabled")
-          vim.cmd("edit") -- re-run BufReadPost conversion
-        else
-          print("image.nvim disabled")
           image.clear()
+          print("🖼️ image.nvim: images hidden")
+        else
+          vim.cmd("edit!") -- retrigger BufReadPost → render
+          print("🖼️ image.nvim: images rendered")
         end
+        is_enabled = not is_enabled
       end, {})
 
-      vim.keymap.set("n", "<leader>ti", "<cmd>ImageToggle<cr>", { desc = "Toggle images" })
+      vim.keymap.set("n", "<leader>it", "<cmd>ImageToggle<cr>", { desc = "Toggle image rendering" })
+
+      vim.api.nvim_create_autocmd("VimLeavePre", {
+        callback = function()
+          require("image").clear()
+        end,
+      })
     end,
   },
 }

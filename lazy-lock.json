@@ -18,6 +18,7 @@
   "gruvbox-modern": { "branch": "main", "commit": "2eb7c348f880ba93de4d98cae049c9441f5d4d49" },
   "gruvbox.nvim": { "branch": "main", "commit": "58a2cda2e953a99e2f87c12b7fb4602da4e0709c" },
   "image.nvim": { "branch": "master", "commit": "4c51d6202628b3b51e368152c053c3fb5c5f76f2" },
+  "img-clip.nvim": { "branch": "main", "commit": "d8b6b030672f9f551a0e3526347699985a779d93" },
   "indent-blankline.nvim": { "branch": "master", "commit": "005b56001b2cb30bfa61b7986bc50657816ba4ba" },
   "kanagawa.nvim": { "branch": "master", "commit": "debe91547d7fb1eef34ce26a5106f277fbfdd109" },
   "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },

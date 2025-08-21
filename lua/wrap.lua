@@ -139,17 +139,18 @@ local function split_only_file()
     print("No textwidth set!")
     return
   end
+
   local last = vim.fn.line("$")
-  for lnum = 1, last do
+  for lnum = last, 1, -1 do -- iterate backwards
     local line = vim.fn.getline(lnum)
     if vim.fn.strdisplaywidth(line) > width then
       vim.cmd(lnum .. "normal! gqq")
     end
   end
-  print("Split-only wrap done for whole file at " .. width)
+
+  print("✅ Split-only wrap done for whole file at " .. width)
 end
 
--- Command
 vim.api.nvim_create_user_command("SplitOnlyFile", split_only_file, {})
 
 -- Or keymap
