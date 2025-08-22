@@ -4,27 +4,34 @@ return {
   event = "VeryLazy",
   opts = {
     default = {
-      -- Put images in an attachments/ folder next to the current file
-      dir_path = function()
-        return vim.fn.expand("%:p:h") .. "/attachments"
-      end,
-      file_name = "Pasted image %Y%m%d%H%M%S.png",
+      dir_path = "attachments", -- save images in ./attachments relative to current file
+      extension = "png",
+      file_name = "Pasted image %Y%m%d%H%M%S",
+      prompt_for_file_name = false,
+      relative_to_current_file = true,
+      relative_template_path = true,
+      url_encode_path = true,
+    },
 
-      -- Paste as absolute Markdown with %20 escapes
-      template = function(opts)
-        local abs_path = opts.dir_path .. "/" .. opts.file_name
-        local esc_path = abs_path:gsub(" ", "%%20")
-        return "![](" .. esc_path .. ")"
-      end,
+    filetypes = {
+      markdown = {
+        url_encode_path = true,
+        download_images = false,
+        template = '<img src="$FILE_PATH">', -- same as html default
+      },
+
+      html = {
+        url_encode_path = true,
+        template = '<img src="$FILE_PATH">',
+      },
     },
   },
+
   keys = {
     {
       "<leader>i",
-      function()
-        require("img-clip").paste_image()
-      end,
-      desc = "Paste image (absolute Markdown)",
+      "<cmd>PasteImage<cr>",
+      desc = "Paste image as HTML <img>",
     },
   },
 }

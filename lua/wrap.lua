@@ -155,3 +155,23 @@ vim.api.nvim_create_user_command("SplitOnlyFile", split_only_file, {})
 
 -- Or keymap
 vim.keymap.set("n", "<leader>gq", split_only_file, { desc = "Hard wrap whole file (split-only)" })
+
+vim.api.nvim_create_user_command("SplitOnlyDir", function(opts)
+  local dir = opts.args ~= "" and opts.args or vim.fn.getcwd()
+  local files = vim.fn.globpath(dir, "**/*.md", false, true)
+
+  for _, file in ipairs(files) do
+    vim.cmd("edit " .. vim.fn.fnameescape(file))
+
+    -- set hard wrap mode so textwidth & formatoptions are correct
+    vim.cmd("WrapHard")
+
+    -- now apply split-only wrapping
+    vim.cmd("SplitOnlyFile")
+
+    vim.cmd("write")
+    vim.cmd("bufdo bwipeout") -- close buffers when done
+  end
+
+  print("✅ Finished reflowing all .md in " .. dir)
+end, { nargs = "?" })
