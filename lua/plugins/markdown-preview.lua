@@ -7,12 +7,13 @@ return {
     build = "cd app && npm install",
     init = function()
       vim.g.mkdp_filetypes = { "markdown" }
-      vim.g.mkdp_theme = "dark" -- optional
+      -- vim.g.mkdp_theme = "dark"
       vim.g.mkdp_preview_options = {
         mkit = {
-          ["breaks"] = false, -- strict line breaks OFF
+          ["breaks"] = true, -- strict line breaks OFF
         },
       }
+      vim.g.mkdp_markdown_css = vim.fn.expand("~/.config/nvim/github-markdown-dark.css")
     end,
     config = function()
       -- keymap for preview

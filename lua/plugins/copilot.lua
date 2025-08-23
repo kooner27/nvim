@@ -1,4 +1,12 @@
 -- add to the readme
+-- change default split global and for copilot (right instead of left)
+-- vim.opt.splitright = true
+-- -- also for copilot
+-- vim.opt.completeopt = { "menu", "menuone", "noinsert", "noselect", "popup" }
+-- -- disable copilot auto completion, i want it just to be the backend for chat
+vim.g.copilot_enabled = false
+-- vim.g.copilot_filetypes = { ["*"] = false }
+
 return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",

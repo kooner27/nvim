@@ -26,11 +26,11 @@ return {
           html = {
             enabled = true,
             download_remote_images = true,
-            clear_in_insert_mode = false,
+            clear_in_insert_mode = true,
             only_render_image_at_cursor = true, -- perf-friendly
             only_render_image_at_cursor_mode = "inline", -- inline instead of float
             floating_windows = false,
-            window_overlap_clear_enabled = true,
+            window_overlap_clear_enabled = false,
             filetypes = { "html", "xhtml", "htm", "markdown" },
           },
         },
