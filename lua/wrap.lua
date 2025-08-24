@@ -65,6 +65,24 @@ local function ensure_soft_wrap_width(target_width)
   vim.cmd("vertical resize " .. target_width)
 end
 
+-- need to account for gutter in soft wrap mode if you want line numbers
+local function get_gutter_width()
+  local width = 0
+
+  -- signcolumn (each is ~2 chars wide)
+  if vim.wo.signcolumn ~= "no" then
+    local n = tonumber(vim.wo.signcolumn:match(":(%d+)")) or 1
+    width = width + n * 2
+  end
+
+  -- numberwidth (line number column)
+  if vim.wo.number or vim.wo.relativenumber then
+    width = width + vim.wo.numberwidth
+  end
+
+  return width
+end
+
 local function set_wrap_mode(mode)
   if mode == "none" then
     close_wrap_pad()
@@ -79,12 +97,14 @@ local function set_wrap_mode(mode)
     vim.opt_local.signcolumn = "yes"
     print("🔓 No wrap")
   elseif mode == "soft" then
-    ensure_soft_wrap_width(WRAP_WIDTH)
+    local gutter = get_gutter_width()
+
+    ensure_soft_wrap_width(WRAP_WIDTH + gutter)
 
     -- hide distractions in the main window
-    vim.opt_local.number = false
+    vim.opt_local.number = true
     vim.opt_local.relativenumber = false
-    vim.opt_local.signcolumn = "no"
+    vim.opt_local.signcolumn = "yes"
 
     -- soft wrap settings
     vim.opt_local.wrap = true

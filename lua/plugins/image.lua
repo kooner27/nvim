@@ -7,6 +7,7 @@ return {
   {
     "3rd/image.nvim",
     dependencies = { "luarocks.nvim" },
+    enabled = false,
     config = function()
       local image = require("image")
       local is_enabled = true
