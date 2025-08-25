@@ -3,6 +3,7 @@ return {
   {
     "zaldih/themery.nvim",
     lazy = false,
+    -- enabled = false,
     config = function()
       require("themery").setup({
         livePreview = true,
@@ -25,7 +26,7 @@ return {
           "dracula",
           "edge",
           "everforest",
-          "gruvbox",
+          -- "gruvbox",
           -- "gruvbox-baby",
           -- "gruvbox-flat",
           "gruvbox-material",
@@ -61,7 +62,7 @@ return {
   { "Mofiqul/dracula.nvim" },
   { "sainnhe/edge" },
   { "sainnhe/everforest" },
-  { "ellisonleao/gruvbox.nvim" },
+  -- { "ellisonleao/gruvbox.nvim" },
   -- { "luisiacc/gruvbox-baby" },
   -- { "eddyekofo94/gruvbox-flat.nvim" },
   { "sainnhe/gruvbox-material" },

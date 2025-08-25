@@ -21,41 +21,10 @@ return {
         },
       })
 
-      -- Key mappings for switching between buffers using Alt + number keys
-      for i = 1, 9 do
-        vim.api.nvim_set_keymap(
-          "n",
-          "<A-" .. i .. ">",
-          ":BufferLineGoToBuffer " .. i .. "<CR>",
-          { noremap = true, silent = true }
-        )
-      end
-      -- fallback if Alt+number doesn't work in Ghostty
       for i = 1, 9 do
         vim.keymap.set("n", "<leader>" .. i, function()
-          -- Get list of listed buffers (in bufferline order)
-          local buffers = vim.fn.getbufinfo({ buflisted = 1 })
-          table.sort(buffers, function(a, b)
-            return a.bufnr < b.bufnr
-          end)
-
-          local target = buffers[i]
-          if not target then
-            return
-          end -- No such buffer
-
-          local name = target.name
-          local bufnr = target.bufnr
-          local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-
-          if name == "" and #lines == 1 and lines[1] == "" then
-            -- [No Name] and empty → delete it
-            vim.api.nvim_buf_delete(bufnr, { force = true })
-          else
-            -- valid buffer → go to it
-            vim.cmd("BufferLineGoToBuffer " .. i)
-          end
-        end, { noremap = true, silent = true })
+          require("bufferline").go_to_buffer(i, true) -- true = absolute index
+        end, { noremap = true, silent = true, desc = "Go to buffer " .. i })
       end
 
       -- Key mappings for moving buffers left and right
