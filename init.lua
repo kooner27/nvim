@@ -8,8 +8,9 @@ vim.opt.autoindent = true
 vim.opt.wrap = false
 vim.g.mapleader = " "
 
--- Show tabline when there are multiple tabs
+-- line numbers
 vim.opt.number = true
+vim.opt.fillchars:append({ eob = " " })
 
 -- highlight current line
 vim.opt.cursorline = true

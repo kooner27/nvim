@@ -1,12 +1,12 @@
--- return {
---   "catppuccin/nvim",
---   lazy = false,
---   name = "catppuccin",
---   priority = 1000,
---   config = function()
---     vim.cmd.colorscheme("catppuccin")
---   end,
--- }
+return {
+  "catppuccin/nvim",
+  lazy = false,
+  name = "catppuccin",
+  priority = 1000,
+  config = function()
+    vim.cmd.colorscheme("catppuccin")
+  end,
+}
 
 -- return {
 --   "ellisonleao/gruvbox.nvim",
@@ -26,23 +26,23 @@
 --   end,
 -- }
 
-return {
-  "sainnhe/gruvbox-material",
-  lazy = false,
-  name = "gruvbox-material",
-  priority = 1000,
-  config = function()
-    overrides = {
-      ["@markup.heading.1.markdown"] = { fg = "#fb4934", bold = true }, -- red
-      ["@markup.heading.2.markdown"] = { fg = "#b8bb26", bold = true }, -- green
-      ["@markup.heading.3.markdown"] = { fg = "#fabd2f", bold = true }, -- yellow
-    }
-    -- vim.g.gruvbox_material_background = "medium" -- 'hard', 'medium', 'soft'
-    -- vim.g.gruvbox_material_foreground = "mix"   -- 'material', 'mix', 'original'
-    -- vim.g.gruvbox_material_better_performance = 1
-    vim.cmd.colorscheme("gruvbox-material")
-  end,
-}
+-- return {
+--   "sainnhe/gruvbox-material",
+--   lazy = false,
+--   name = "gruvbox-material",
+--   priority = 1000,
+--   config = function()
+--     -- overrides = {
+--     --   ["@markup.heading.1.markdown"] = { fg = "#fb4934", bold = true }, -- red
+--     --   ["@markup.heading.2.markdown"] = { fg = "#b8bb26", bold = true }, -- green
+--     --   ["@markup.heading.3.markdown"] = { fg = "#fabd2f", bold = true }, -- yellow
+--     -- }
+--     vim.g.gruvbox_material_background = "medium" -- 'hard', 'medium', 'soft'
+--     vim.g.gruvbox_material_foreground = "original" -- 'material', 'mix', 'original'
+--     -- vim.g.gruvbox_material_better_performance = 1
+--     vim.cmd.colorscheme("gruvbox-material")
+--   end,
+-- }
 
 -- return {
 --   "rebelot/kanagawa.nvim",
