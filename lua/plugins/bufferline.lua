@@ -21,9 +21,26 @@ return {
         },
       }
 
+      -- for i = 1, 9 do
+      --   vim.keymap.set('n', '<leader>' .. i, function()
+      --     require('bufferline').go_to_buffer(i, true) -- true = absolute index
+      --   end, { noremap = true, silent = true, desc = 'Go to buffer ' .. i })
+      -- end
       for i = 1, 9 do
         vim.keymap.set('n', '<leader>' .. i, function()
-          require('bufferline').go_to_buffer(i, true) -- true = absolute index
+          require('bufferline').go_to_buffer(i, true)
+
+          local buf = vim.api.nvim_get_current_buf()
+          local name = vim.api.nvim_buf_get_name(buf)
+          local line_count = vim.api.nvim_buf_line_count(buf)
+
+          -- If it's a [No Name] buffer with no content, close it
+          if name == '' and line_count == 1 then
+            local first_line = vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1]
+            if first_line == '' then
+              vim.cmd 'bdelete!'
+            end
+          end
         end, { noremap = true, silent = true, desc = 'Go to buffer ' .. i })
       end
 
