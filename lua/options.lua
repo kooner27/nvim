@@ -31,6 +31,24 @@ vim.keymap.set('n', '<leader>ts', function()
   end
 end, { desc = 'Toggle scrolloff between 10 and 0' })
 
+local view_group = vim.api.nvim_create_augroup('remember_view', { clear = true })
+
+vim.api.nvim_create_autocmd('BufLeave', {
+  group = view_group,
+  callback = function()
+    vim.b.saved_view = vim.fn.winsaveview()
+  end,
+})
+
+vim.api.nvim_create_autocmd('BufEnter', {
+  group = view_group,
+  callback = function()
+    if vim.b.saved_view then
+      vim.fn.winrestview(vim.b.saved_view)
+    end
+  end,
+})
+
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
