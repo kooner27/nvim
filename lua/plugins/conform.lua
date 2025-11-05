@@ -12,6 +12,15 @@ return {
         mode = '',
         desc = '[F]ormat buffer',
       },
+      {
+        '<leader>tf',
+        function()
+          vim.g.disable_autoformat = not vim.g.disable_autoformat
+          local state = vim.g.disable_autoformat and 'OFF' or 'ON'
+          vim.notify('Format on save: ' .. state, vim.log.levels.INFO)
+        end,
+        desc = '[T]oggle [F]ormat on Save',
+      },
     },
     opts = {
       notify_on_error = false,
@@ -20,6 +29,10 @@ return {
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
         -- local disable_filetypes = { c = true, cpp = true }
+        -- Global toggle
+        if vim.g.disable_autoformat then
+          return
+        end
         local disable_filetypes = {}
         if disable_filetypes[vim.bo[bufnr].filetype] then
           return nil
