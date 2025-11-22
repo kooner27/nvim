@@ -16,6 +16,20 @@ vim.api.nvim_set_keymap(
   { noremap = true, silent = true }
 )
 
+-- toggle lsp
+vim.keymap.set('n', '<leader>tl', function()
+  local clients = vim.lsp.get_active_clients { bufnr = 0 }
+  if #clients > 0 then
+    for _, client in ipairs(clients) do
+      vim.lsp.stop_client(client.id, true)
+    end
+    print 'LSP: stopped'
+  else
+    vim.cmd 'LspStart'
+    print 'LSP: started'
+  end
+end, { desc = 'Toggle LSP' })
+
 -- -- Clear highlights on search when pressing <Esc> in normal mode
 -- --  See `:help hlsearch`
 -- vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
