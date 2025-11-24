@@ -30,6 +30,31 @@ return {
       'saghen/blink.cmp',
     },
     config = function()
+      _G.LSP_ENABLED = true
+
+      -- Override LSP start so NO server can start when disabled
+      local orig_lsp_start = vim.lsp.start
+      vim.lsp.start = function(config, opts)
+        if not _G.LSP_ENABLED then
+          return nil
+        end
+        return orig_lsp_start(config, opts)
+      end
+
+      -- Keymap: <leader>tl to toggle LSP globally
+      vim.keymap.set('n', '<leader>tl', function()
+        _G.LSP_ENABLED = not _G.LSP_ENABLED
+
+        if not _G.LSP_ENABLED then
+          -- Stop all currently-running clients
+          for _, client in ipairs(vim.lsp.get_active_clients()) do
+            client.stop(true)
+          end
+          print 'LSP: disabled globally'
+        else
+          print 'LSP: enabled (restart buffer or run :LspStart)'
+        end
+      end, { desc = 'Toggle global LSP' })
       -- Brief aside: **What is LSP?**
       --
       -- LSP is an initialism you've probably heard, but might not understand what it is.
